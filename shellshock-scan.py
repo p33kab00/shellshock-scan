@@ -12,7 +12,10 @@ if len(sys.argv) < 2:
 start = time.time()*1000
 url = urlparse(sys.argv[1])
 if url.port is None:
-  port = 80
+  if url.scheme != 'https':
+    port = 80
+  else:
+    port = 443
 else:
   port = url.port
 try:
