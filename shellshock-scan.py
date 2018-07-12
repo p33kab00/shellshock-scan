@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 from urlparse import urlparse
-import httplib, time, sys 
+import httplib, time, sys, argparse
 
 if len(sys.argv) < 2:
   print "Usage:"
@@ -11,6 +11,8 @@ if len(sys.argv) < 2:
 
 start = time.time()*1000
 url = urlparse(sys.argv[1])
+if not url.scheme:
+  url = urlparse("http://%s" %(url.path))
 if url.port is None:
   if url.scheme != 'https':
     port = 80
@@ -18,6 +20,7 @@ if url.port is None:
     port = 443
 else:
   port = url.port
+
 try:
   scripts = [line.rstrip('\n') for line in open(sys.argv[2])]
 except:
@@ -25,7 +28,8 @@ except:
 
 print "[*] shellshock-scan 0.1"
 print "[*] by p33kab00 (mudnorb@gmail.com)"
-print "[*] # of checks: %i\n" %(len(scripts))
+print "[*] # of checks: %i" %(len(scripts))
+print "[*] target: %s://%s:%i\n" %(url.scheme, url.hostname, port)
 
 def sendGet( script, payload ):
   if url.scheme != 'https':
